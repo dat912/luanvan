@@ -10,12 +10,34 @@ router.get("/getChiNhanhAll", (req, res) => {
   });
 });
 
+// router.post("/addChiNhanh", (req, res) => {
+//   const sql = "INSERT INTO chinhanh ( `tenchinhanh`, `diachi`) VALUES (?)";
+//   const values = [req.body.tenchinhanh, req.body.diachi];
+//   db.query(sql, [values], (err, result) => {
+//     if (err) return res.json("khong lay duoc data");
+//     return res.json(result);
+//   });
+// });
+
 router.post("/addChiNhanh", (req, res) => {
-  const sql = "INSERT INTO chinhanh ( `tenchinhanh`, `diachi`) VALUES (?)";
-  const values = [req.body.tenchinhanh, req.body.diachi];
-  db.query(sql, [values], (err, result) => {
-    if (err) return res.json("khong lay duoc data");
-    return res.json(result);
+  const { tenchinhanh, diachi } = req.body;
+  const checkSql = "SELECT * FROM chinhanh WHERE tenchinhanh = ?";
+  db.query(checkSql, [tenchinhanh], (err, results) => {
+    if (err) {
+      return res.json("Lỗi khi kiểm tra tên chi nhánh");
+    }
+    if (results.length > 0) {
+      return res.json("Tên chi nhánh đã tồn tại");
+    }
+    const insertSql =
+      "INSERT INTO chinhanh (`tenchinhanh`, `diachi`) VALUES (?)";
+    const values = [tenchinhanh, diachi];
+    db.query(insertSql, [values], (err, result) => {
+      if (err) {
+        return res.json("Không thêm được chi nhánh");
+      }
+      return res.json("Thêm chi nhánh thành công");
+    });
   });
 });
 

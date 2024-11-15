@@ -10,12 +10,34 @@ router.get("/getDichVuAll", (req, res) => {
   });
 });
 
+// router.post("/addDichVu", (req, res) => {
+//   const sql = "INSERT INTO dichvu ( `tendichvu`, `gia`) VALUES (?)";
+//   const values = [req.body.tendichvu, req.body.gia];
+//   db.query(sql, [values], (err, result) => {
+//     if (err) return res.json("khong lay duoc data");
+//     return res.json(result);
+//   });
+// });
+
 router.post("/addDichVu", (req, res) => {
-  const sql = "INSERT INTO dichvu ( `tendichvu`, `gia`) VALUES (?)";
-  const values = [req.body.tendichvu, req.body.gia];
-  db.query(sql, [values], (err, result) => {
-    if (err) return res.json("khong lay duoc data");
-    return res.json(result);
+  const { tendichvu, gia } = req.body;
+
+  const checkSql = "SELECT * FROM dichvu WHERE tendichvu = ?";
+  db.query(checkSql, [tendichvu], (err, results) => {
+    if (err) {
+      return res.json("Lỗi khi kiểm tra tên dịch vụ");
+    }
+    if (results.length > 0) {
+      return res.json("Tên dịch vụ đã tồn tại");
+    }
+    const insertSql = "INSERT INTO dichvu (`tendichvu`, `gia`) VALUES (?)";
+    const values = [tendichvu, gia];
+    db.query(insertSql, [values], (err, result) => {
+      if (err) {
+        return res.json("Không thêm được dịch vụ");
+      }
+      return res.json("Thêm dịch vụ thành công");
+    });
   });
 });
 

@@ -140,4 +140,34 @@ router.put("/capnhat/:id", async (req, res) => {
   }
 });
 
+router.get("/getHoaDonBooking/:id", (req, res) => {
+  // Đảm bảo rằng tham số URL có dấu ":" ở phía trước "id"
+  const id = req.params.id; // Lấy id từ params
+  const query = `
+    SELECT 
+      chinhanh.tenchinhanh AS TenChiNhanh,
+      dichvu.tendichvu AS TenDichVu,
+      nhanvien.ten AS TenNhanVien,
+      datlich.ngay AS Ngay,
+      datlich.gio AS Gio, 
+      datlich.tongtien AS TongTien,
+      trangthai.ten AS TenTrangThai,
+      user.ten AS TenUser
+    FROM datlich
+    JOIN chinhanh ON datlich.idchinhanh = chinhanh.id
+    JOIN dichvu ON datlich.iddichvu = dichvu.id 
+    JOIN nhanvien ON datlich.idnhanvien = nhanvien.id
+    JOIN trangthai ON datlich.idtrangthai = trangthai.id
+    JOIN user ON datlich.iduser = user.id
+    WHERE trangthai.id = 3 AND datlich.id = ?`; //
+
+  // Thực hiện truy vấn với id được truyền vào
+  db.query(query, [id], (error, results) => {
+    if (error) {
+      return res.status(500).json({ error: "Database error" });
+    }
+    res.json(results); // Trả kết quả dưới dạng JSON
+  });
+});
+
 module.exports = router;
