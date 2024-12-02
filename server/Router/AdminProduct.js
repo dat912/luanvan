@@ -10,6 +10,7 @@ router.get("/getProductAll", (req, res) => {
       product.id,
       product.ten,
       product.img,
+      product.soluong,
       product.gia,
       product.chitiet,
       category.ten AS category_name,
@@ -34,7 +35,7 @@ router.get("/getCategoryAll", (req, res) => {
 });
 
 router.post("/addProduct", (req, res) => {
-  const { ten, img, chitiet, gia, category_id } = req.body;
+  const { ten, img, soluong, chitiet, gia, category_id } = req.body;
   const checkSql = "SELECT * FROM product  WHERE ten = ?";
   db.query(checkSql, [ten], (err, results) => {
     if (err) {
@@ -44,8 +45,8 @@ router.post("/addProduct", (req, res) => {
       return res.json("Tên Product đã tồn tại");
     }
     const insertSql =
-      "INSERT INTO product (`ten`, `img`, `chitiet`, `gia`, `category_id`) VALUES (?)";
-    const values = [ten, img, chitiet, gia, category_id];
+      "INSERT INTO product (`ten`, `img`,`soluong`, `chitiet`, `gia`, `category_id`) VALUES (?)";
+    const values = [ten, img, soluong, chitiet, gia, category_id];
     db.query(insertSql, [values], (err, result) => {
       if (err) {
         return res.json("Không thêm được Product");
@@ -57,14 +58,19 @@ router.post("/addProduct", (req, res) => {
 
 router.put("/editProduct/:id", (req, res) => {
   const id = req.params.id;
-  const { ten, img, chitiet, gia, category_id } = req.body;
+  const { ten, img, soluong, chitiet, gia, category_id } = req.body;
 
   const sql =
-    "UPDATE product SET `ten` = ?, `img` = ?, `chitiet` = ?, `gia` = ?, `category_id` = ? WHERE id = ?";
-  db.query(sql, [ten, img, chitiet, gia, category_id, id], (error, result) => {
-    if (error) return res.json({ Status: false, Error: "Query Error" + error });
-    return res.json({ Status: true, Result: result });
-  });
+    "UPDATE product SET `ten` = ?, `img` = ?,`soluong` = ?, `chitiet` = ?, `gia` = ?, `category_id` = ? WHERE id = ?";
+  db.query(
+    sql,
+    [ten, img, soluong, chitiet, gia, category_id, id],
+    (error, result) => {
+      if (error)
+        return res.json({ Status: false, Error: "Query Error" + error });
+      return res.json({ Status: true, Result: result });
+    }
+  );
 });
 
 // router.put("/editProduct/:id", (req, res) => {

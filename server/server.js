@@ -98,8 +98,14 @@ const AdminCategory = require("./Router/AdminCategory");
 const AdminProduct = require("./Router/AdminProduct");
 const AdminBookings = require("./Router/AdminBookings");
 const AdminKhachHang = require("./Router/AdminKhachHang");
+const AdminDonHang = require("./Router/AdminDonHang");
+const Payment = require("./Router/Payment");
 const Momo = require("./Router/Momo");
+const ThongKe = require("./Router/AdminThongKe");
 
+app.use("", ThongKe);
+app.use("", Payment);
+app.use("", AdminDonHang);
 app.use("", AdminKhachHang);
 app.use("", AdminProduct);
 app.use("", AdminCategory);

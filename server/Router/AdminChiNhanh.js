@@ -10,6 +10,28 @@ router.get("/getChiNhanhAll", (req, res) => {
   });
 });
 
+router.get("/getCountNhanVien", (req, res) => {
+  const sql = `
+    SELECT 
+      c.id, 
+      c.tenchinhanh, 
+      c.diachi, 
+      COUNT(n.id) AS soluong 
+    FROM 
+      chinhanh c
+    LEFT JOIN 
+      nhanvien n 
+    ON 
+      c.id = n.idchinhanh
+    GROUP BY 
+      c.id, c.tenchinhanh, c.diachi
+  `;
+  db.query(sql, (err, result) => {
+    if (err) return res.json({ Message: "Error inside server" });
+    return res.json(result);
+  });
+});
+
 // router.post("/addChiNhanh", (req, res) => {
 //   const sql = "INSERT INTO chinhanh ( `tenchinhanh`, `diachi`) VALUES (?)";
 //   const values = [req.body.tenchinhanh, req.body.diachi];

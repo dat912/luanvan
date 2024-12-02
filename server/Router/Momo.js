@@ -3,7 +3,6 @@ const express = require("express");
 const crypto = require("crypto");
 const router = express.Router();
 const db = require("../config/db");
-// Hàm xử lý callback từ Momo
 
 // Định nghĩa các route
 // router.post("/momo", async (req, res) => {
@@ -79,9 +78,8 @@ router.post("/momo", async (req, res) => {
   var secretKey = "K951B6PE1waDMi640xX08PD3vg6EkVlz";
   var orderInfo = "pay with MoMo";
   var partnerCode = "MOMO";
-  var redirectUrl = "http://localhost:3000/booking"; // Tạo trang kết quả thanh toán mới
-  var ipnUrl =
-    "https://0253-2001-ee0-50d4-54a0-859c-5e14-66cb-d1ca.ngrok-free.app/callback"; // Update với domain thật của bạn
+  var redirectUrl = "http://localhost:3000/booking"; //
+  var ipnUrl = "https://674b-112-197-14-130.ngrok-free.app/callback"; // Update với domain thật của bạn
   var requestType = "payWithMethod";
   var orderId = partnerCode + new Date().getTime();
   var requestId = orderId;

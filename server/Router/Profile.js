@@ -64,4 +64,38 @@ router.get("/bookings/:userId", (req, res) => {
   });
 });
 
+router.get("/hoadon/:userId", (req, res) => {
+  const id = req.params.userId;
+
+  const query = `
+      SELECT 
+    donhang.id AS madonhang,
+    product.ten AS tensanpham,
+    chitietdonhang.soluong,
+    chitietdonhang.gia,
+    chitietdonhang.tongtien,
+    user.ten AS tenuser,
+    status.ten AS tentrangthai,
+    donhang.diachi,
+    donhang.created_at,
+    donhang.tongtien AS tongtienhoadon
+FROM 
+    donhang
+JOIN 
+    chitietdonhang ON donhang.id = chitietdonhang.donhang_id
+JOIN 
+    user ON donhang.user_id = user.id
+JOIN 
+    status ON donhang.status_id = status.id
+JOIN 
+    product ON chitietdonhang.product_id = product.id
+    WHERE user_id = ?`;
+  db.query(query, [id], (error, results) => {
+    if (error) {
+      return res.status(500).json({ error: "Database error" });
+    }
+    res.json(results);
+  });
+});
+
 module.exports = router;
