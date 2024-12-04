@@ -114,5 +114,33 @@ router.delete("/deleteProduct/:id", (req, res) => {
     return res.status(200).json({ message: "Xoá Product thành công" });
   });
 });
+// nhập file Excel
+
+// nhập file Excel
+router.post("/api/products/import", async (req, res) => {
+  try {
+    const products = req.body;
+
+    for (const product of products) {
+      // Thêm sản phẩm vào cơ sở dữ liệu
+      await db.query(
+        "INSERT INTO product (ten, img, gia, soluong, chitiet, category_id ) VALUES (?, ?, ?, ?, ?, ?)",
+        [
+          product.ten,
+          product.img,
+          product.gia,
+          product.soluong,
+          product.chitiet,
+          product.category_id,
+        ]
+      );
+    }
+
+    res.status(200).json({ message: "Nhập Excel thành công!" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Lỗi khi nhập Excel!" });
+  }
+});
 
 module.exports = router;

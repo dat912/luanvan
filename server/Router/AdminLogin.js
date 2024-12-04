@@ -46,7 +46,7 @@ router.post("/loginAdmin", (req, res) => {
       const token = jwt.sign(
         { id: user.id, email: user.email, role: role },
         secretKey,
-        { expiresIn: "1h" } // Token hết hạn sau 1 giờ
+        { expiresIn: "30m" }
       );
 
       // Trả về token và role của người dùng

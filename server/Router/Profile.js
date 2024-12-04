@@ -5,7 +5,7 @@ const db = require("../config/db");
 // API lấy thông tin user
 router.get("/user/:id", (req, res) => {
   const userId = req.params.id;
-  const query = "SELECT id, email, ten, phone FROM user WHERE id = ?";
+  const query = "SELECT id, email, ten, diachi, phone FROM user WHERE id = ?";
 
   db.query(query, [userId], (err, result) => {
     if (err) {
@@ -25,11 +25,11 @@ router.get("/user/:id", (req, res) => {
 // API cập nhật thông tin user
 router.put("/userUpdate/:id", (req, res) => {
   const id = req.params.id;
-  const { ten, phone, email } = req.body;
+  const { ten, phone, email, diachi } = req.body;
 
   const sql =
-    "UPDATE user SET `ten` = ?, `phone` = ?, `email` = ? WHERE id = ?";
-  db.query(sql, [ten, phone, email, id], (error, result) => {
+    "UPDATE user SET `ten` = ?, `phone` = ?, `email` = ?,`diachi` = ? WHERE id = ?";
+  db.query(sql, [ten, phone, email, diachi, id], (error, result) => {
     if (error) return res.json({ Status: false, Error: "Query Error" + error });
     return res.json({ Status: true, Result: result });
   });
@@ -89,7 +89,9 @@ JOIN
     status ON donhang.status_id = status.id
 JOIN 
     product ON chitietdonhang.product_id = product.id
-    WHERE user_id = ?`;
+WHERE 
+    user_id = ?
+ORDER BY donhang.created_at DESC`;
   db.query(query, [id], (error, results) => {
     if (error) {
       return res.status(500).json({ error: "Database error" });

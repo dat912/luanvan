@@ -55,6 +55,7 @@ router.post("/login", async (req, res) => {
               ten: data[0].ten,
               id: data[0].id,
               email: data[0].email,
+              diachi: data[0].diachi,
             });
           } else {
             return res.json({ success: false, message: "Sai mật khẩu" });

@@ -14,7 +14,7 @@ router.post("/orders", (req, res) => {
       return res.status(500).json({ error: "Transaction error", details: err });
     }
 
-    const insertOrderQuery = `INSERT INTO donhang (user_id, status_id, tongtien, diachi,method_id) VALUES (?, ?, ?, ?,2)`;
+    const insertOrderQuery = `INSERT INTO donhang (user_id, status_id, tongtien, diachi,method_id) VALUES (?, ?, ?, ?, 2)`;
     db.query(
       insertOrderQuery,
       [userId, 1, totalPrice, address],
