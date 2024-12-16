@@ -77,4 +77,31 @@ router.post("/datlich", (req, res) => {
   });
 });
 
+router.post("/kiemtragio", (req, res) => {
+  const { idchinhanh, ngay, idnhanvien } = req.body;
+
+  if (!idchinhanh || !ngay || !idnhanvien) {
+    return res
+      .status(400)
+      .json({ error: "Thiếu thông tin yêu cầu: idchinhanh, ngay, idnhanvien" });
+  }
+
+  const query = `
+      SELECT gio 
+      FROM datlich 
+      WHERE idchinhanh = ? AND ngay = ? AND idnhanvien = ?
+  `;
+
+  db.query(query, [idchinhanh, ngay, idnhanvien], (err, results) => {
+    if (err) {
+      console.error("Lỗi khi truy vấn:", err);
+      return res.status(500).json({ error: "Lỗi hệ thống" });
+    }
+
+    // Lấy danh sách giờ đã được đặt
+    const gioDaDat = results.map((row) => row.gio);
+    res.json({ gioDaDat });
+  });
+});
+
 module.exports = router;

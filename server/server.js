@@ -102,7 +102,9 @@ const AdminDonHang = require("./Router/AdminDonHang");
 const Payment = require("./Router/Payment");
 const Momo = require("./Router/Momo");
 const ThongKe = require("./Router/AdminThongKe");
+const Role = require("./Router/AdminRole");
 
+app.use("", Role);
 app.use("", ThongKe);
 app.use("", Payment);
 app.use("", AdminDonHang);
