@@ -91,7 +91,7 @@ router.post("/kiemtragio", (req, res) => {
       FROM datlich 
       WHERE idchinhanh = ? AND ngay = ? AND idnhanvien = ?
   `;
-
+  //
   db.query(query, [idchinhanh, ngay, idnhanvien], (err, results) => {
     if (err) {
       console.error("Lỗi khi truy vấn:", err);
